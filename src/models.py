@@ -36,4 +36,9 @@ class SmallCNN(nn.Module):
         # Exercise 1: Implement the forward pass for SmallCNN
         # Pass input x through conv1, relu1, pool1, conv2, relu2, pool2, flatten, and fc.
         # Return raw logits without softmax.
-        raise NotImplementedError("Student TODO: Implement SmallCNN.forward")
+        #raise NotImplementedError("Student TODO: Implement SmallCNN.forward")
+        
+        #convolution-ReLU-max-pooling
+        x = self.pool1(self.relu1(self.conv1(x)))
+        x = self.pool2(self.relu2(self.conv2(x)))
+        return self.fc(self.flatten(x))
