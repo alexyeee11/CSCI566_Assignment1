@@ -39,7 +39,25 @@ def train_one_epoch(
     # 3. Compute forward pass, loss, backward pass, optimizer step
     # 4. Track total loss and total correct predictions weighted by batch size
     # 5. Return (sample_weighted_mean_loss, accuracy, total_examples)
-    raise NotImplementedError("Student TODO: Implement train_one_epoch")
+    #raise NotImplementedError("Student TODO: Implement train_one_epoch")
+    model.train()
+    total_loss, total_correct, total_examples = 0.0, 0, 0
+    for imgs, labels, _ in dataloader:
+        imgs = imgs.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+        logits = model(imgs)
+        loss = criterion(logits, labels)
+        loss.backward()
+        optimizer.step()
+
+        batch_size = labels.size(0)
+        total_loss += loss.item() * batch_size
+        total_correct += (logits.argmax(dim=1) == labels).sum().item()
+        total_examples += batch_size
+
+    return total_loss / total_examples, total_correct / total_examples, total_examples
 
 
 def evaluate(
